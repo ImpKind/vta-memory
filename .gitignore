@@ -1,0 +1,6 @@
+# State files (private)
+reward-state.json
+*.tmp
+
+# OS
+.DS_Store
