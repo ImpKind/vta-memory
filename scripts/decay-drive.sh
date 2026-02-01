@@ -35,12 +35,27 @@ echo "─────────────────────"
 echo ""
 echo "Drive: $CURRENT_DRIVE → $NEW_DRIVE (baseline: $BASELINE)"
 
+# Check for stale anticipations (older than 7 days)
+STALE_CUTOFF=$(date -u -v-7d +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || date -u -d "7 days ago" +"%Y-%m-%dT%H:%M:%SZ" 2>/dev/null || echo "")
+
 if [ "$DRY_RUN" = true ]; then
   echo ""
   echo "(dry run - no changes made)"
 else
-  jq --argjson drive "$NEW_DRIVE" --arg now "$NOW" \
-     '.drive = $drive | .lastUpdated = $now' "$STATE_FILE" > "$STATE_FILE.tmp"
+  # Update drive and prune stale anticipations (if they have timestamps)
+  jq --argjson drive "$NEW_DRIVE" --arg now "$NOW" --arg cutoff "$STALE_CUTOFF" \
+     '
+     .drive = $drive | 
+     .lastUpdated = $now |
+     # Prune anticipations older than cutoff (if they have addedAt field)
+     .anticipatingMeta = (if .anticipatingMeta then
+       [.anticipatingMeta[] | select(.addedAt == null or .addedAt > $cutoff)]
+     else [] end) |
+     # Keep anticipating array in sync
+     .anticipating = (if .anticipatingMeta then
+       [.anticipatingMeta[].item]
+     else .anticipating end)
+     ' "$STATE_FILE" > "$STATE_FILE.tmp"
   mv "$STATE_FILE.tmp" "$STATE_FILE"
   
   echo ""

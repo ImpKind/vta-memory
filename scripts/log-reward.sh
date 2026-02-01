@@ -82,6 +82,10 @@ jq --argjson reward "$REWARD_ENTRY" \
    ' "$STATE_FILE" > "$STATE_FILE.tmp"
 mv "$STATE_FILE.tmp" "$STATE_FILE"
 
+# Append to persistent reward log
+LOG_FILE="$WORKSPACE/memory/reward-log.jsonl"
+echo "$REWARD_ENTRY" >> "$LOG_FILE"
+
 echo "⭐ Reward logged!"
 echo "   Type: $TYPE"
 echo "   Source: $SOURCE"

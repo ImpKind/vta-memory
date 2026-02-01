@@ -52,9 +52,13 @@ case $ACTION in
       echo "Usage: $0 --add \"thing to look forward to\""
       exit 1
     fi
+    # Add to both anticipating array and anticipatingMeta (with timestamp)
     jq --arg item "$ITEM" --arg now "$NOW" \
-       '.anticipating = (.anticipating + [$item] | unique) | .lastUpdated = $now' \
-       "$STATE_FILE" > "$STATE_FILE.tmp"
+       '
+       .anticipating = (.anticipating + [$item] | unique) |
+       .anticipatingMeta = ((.anticipatingMeta // []) + [{item: $item, addedAt: $now}] | unique_by(.item)) |
+       .lastUpdated = $now
+       ' "$STATE_FILE" > "$STATE_FILE.tmp"
     mv "$STATE_FILE.tmp" "$STATE_FILE"
     echo "⭐ Now looking forward to: $ITEM"
     
@@ -72,8 +76,11 @@ case $ACTION in
       exit 1
     fi
     jq --arg item "$ITEM" --arg now "$NOW" \
-       '.anticipating = [.anticipating[] | select(. != $item)] | .lastUpdated = $now' \
-       "$STATE_FILE" > "$STATE_FILE.tmp"
+       '
+       .anticipating = [.anticipating[] | select(. != $item)] |
+       .anticipatingMeta = [(.anticipatingMeta // [])[] | select(.item != $item)] |
+       .lastUpdated = $now
+       ' "$STATE_FILE" > "$STATE_FILE.tmp"
     mv "$STATE_FILE.tmp" "$STATE_FILE"
     echo "⭐ Removed from anticipation: $ITEM"
     ;;
@@ -90,7 +97,7 @@ case $ACTION in
     ;;
     
   clear)
-    jq --arg now "$NOW" '.anticipating = [] | .lastUpdated = $now' "$STATE_FILE" > "$STATE_FILE.tmp"
+    jq --arg now "$NOW" '.anticipating = [] | .anticipatingMeta = [] | .lastUpdated = $now' "$STATE_FILE" > "$STATE_FILE.tmp"
     mv "$STATE_FILE.tmp" "$STATE_FILE"
     echo "⭐ Cleared all anticipations"
     ;;

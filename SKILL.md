@@ -4,7 +4,7 @@ description: "Reward and motivation system for AI agents. Dopamine-like wanting,
 metadata:
   openclaw:
     emoji: "⭐"
-    version: "1.0.0"
+    version: "1.1.0"
     author: "ImpKind"
     requires:
       os: ["darwin", "linux"]
@@ -92,6 +92,9 @@ This will:
 | `anticipate.sh` | Add/remove things to look forward to |
 | `seek.sh` | Add/remove things we're actively seeking |
 | `sync-motivation.sh` | Generate VTA_STATE.md for auto-injection |
+| `resolve-anticipation.sh` | Mark anticipation as fulfilled |
+| `update-watermark.sh` | Update processing watermark |
+| `preprocess-rewards.sh` | Extract reward signals from transcript |
 
 ## Reward Types
 
