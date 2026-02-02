@@ -91,14 +91,24 @@ cd ~/.openclaw/workspace/skills/vta-memory
 
 ## Brain Dashboard
 
-Visual dashboard showing all installed brain skills:
+Visual dashboard showing all installed brain skills.
+
+**Generated automatically on install and cron runs.**
+
+Access at: `~/.openclaw/workspace/brain-dashboard.html`
 
 ```bash
+# Generate manually
 ./scripts/generate-dashboard.sh
+
+# Open (macOS)
 open ~/.openclaw/workspace/brain-dashboard.html
+
+# Open (Linux)  
+xdg-open ~/.openclaw/workspace/brain-dashboard.html
 ```
 
-Auto-detects other brain skills (hippocampus, amygdala) and shows install prompts for missing ones. Regenerates on install and cron runs.
+Shows tabs for all brain skills (hippocampus, amygdala, VTA) with install prompts for missing ones.
 
 ## Reward Types
 
