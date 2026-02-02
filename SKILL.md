@@ -4,7 +4,7 @@ description: "Reward and motivation system for AI agents. Dopamine-like wanting,
 metadata:
   openclaw:
     emoji: "⭐"
-    version: "1.2.0"
+    version: "1.2.1"
     author: "ImpKind"
     requires:
       os: ["darwin", "linux"]
