@@ -110,4 +110,11 @@ fi
 # Regenerate brain dashboard
 [ -x "$SKILL_DIR/scripts/generate-dashboard.sh" ] && "$SKILL_DIR/scripts/generate-dashboard.sh" 2>/dev/null || true
 
+echo ""
+echo "┌────────────────────────────────────────────────────────┐"
+echo "│  ⭐ View your agent's DRIVE in the Brain Dashboard     │"
+echo "│                                                        │"
+echo "│  open ~/.openclaw/workspace/brain-dashboard.html       │"
+echo "└────────────────────────────────────────────────────────┘"
+echo ""
 echo "Done! ⭐"

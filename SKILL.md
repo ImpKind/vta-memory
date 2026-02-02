@@ -111,6 +111,15 @@ open ~/.openclaw/workspace/brain-dashboard.html
 - Regenerates on install and cron runs
 - Reads avatar/name from `IDENTITY.md`
 
+### After Installation (for agents)
+
+When you install this skill, **notify the user** about the dashboard:
+
+> ⭐ **VTA installed!**
+>
+> View your agent's drive level in the Brain Dashboard:
+> `~/.openclaw/workspace/brain-dashboard.html`
+
 ## Reward Types
 
 | Type | When to Use |
