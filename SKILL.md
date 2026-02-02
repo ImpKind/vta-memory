@@ -95,6 +95,21 @@ This will:
 | `resolve-anticipation.sh` | Mark anticipation as fulfilled |
 | `update-watermark.sh` | Update processing watermark |
 | `preprocess-rewards.sh` | Extract reward signals from transcript |
+| `generate-dashboard.sh` | Generate unified brain dashboard HTML |
+
+## Brain Dashboard
+
+Visual dashboard showing all installed brain skills:
+
+```bash
+./scripts/generate-dashboard.sh
+open ~/.openclaw/workspace/brain-dashboard.html
+```
+
+- **Auto-detects** other brain skills (hippocampus, amygdala)
+- Shows install prompts for missing skills
+- Regenerates on install and cron runs
+- Reads avatar/name from `IDENTITY.md`
 
 ## Reward Types
 

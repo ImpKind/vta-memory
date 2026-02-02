@@ -87,6 +87,18 @@ cd ~/.openclaw/workspace/skills/vta-memory
 | `resolve-anticipation.sh` | Mark anticipation as fulfilled |
 | `preprocess-rewards.sh` | Extract reward signals from transcript |
 | `update-watermark.sh` | Update processing watermark |
+| `generate-dashboard.sh` | Generate unified brain dashboard |
+
+## Brain Dashboard
+
+Visual dashboard showing all installed brain skills:
+
+```bash
+./scripts/generate-dashboard.sh
+open ~/.openclaw/workspace/brain-dashboard.html
+```
+
+Auto-detects other brain skills (hippocampus, amygdala) and shows install prompts for missing ones. Regenerates on install and cron runs.
 
 ## Reward Types
 
