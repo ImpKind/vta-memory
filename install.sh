@@ -53,18 +53,31 @@ echo "✅ Scripts are executable"
 # 4. Generate initial VTA_STATE.md
 "$SKILL_DIR/scripts/sync-motivation.sh"
 
-# 5. Set up cron if requested
+# 5. Set up OpenClaw cron if requested
 if [ "$1" = "--with-cron" ]; then
   echo ""
-  echo "Setting up cron job for drive decay..."
+  echo "Setting up OpenClaw cron jobs..."
   
-  CRON_CMD="$SKILL_DIR/scripts/decay-drive.sh"
-  if crontab -l 2>/dev/null | grep -q "decay-drive.sh"; then
-    echo "✅ Cron job already exists"
+  if ! command -v openclaw &> /dev/null; then
+    echo "⚠️  'openclaw' not in PATH. Add these cron jobs manually:"
+    echo ""
+    echo "# Drive decay (every 8 hours)"
+    echo "openclaw cron add --name vta-decay --cron '0 4,12,20 * * *' --session isolated --agent-turn '⭐ Run drive decay: Run $SKILL_DIR/scripts/decay-drive.sh and report new drive level'"
+    echo ""
+    echo "# Reward encoding (every 3 hours)"
+    echo "openclaw cron add --name vta-encoding --cron '45 0,3,6,9,12,15,18,21 * * *' --session isolated --agent-turn 'Run VTA reward encoding. Preprocess signals, detect rewards, log them, sync state.'"
   else
-    # Add cron job (every 8 hours - drive decays slower than emotion)
-    (crontab -l 2>/dev/null; echo "0 */8 * * * $CRON_CMD >/dev/null 2>&1") | crontab -
-    echo "✅ Added cron job: every 8 hours"
+    echo "   Creating vta-decay..."
+    openclaw cron add --name vta-decay \
+      --cron '0 4,12,20 * * *' \
+      --session isolated \
+      --agent-turn "⭐ Run drive decay: Run $SKILL_DIR/scripts/decay-drive.sh and report new drive level" 2>/dev/null && echo "   ✅ Created" || echo "   ⏭️  Already exists"
+    
+    echo "   Creating vta-encoding..."
+    openclaw cron add --name vta-encoding \
+      --cron '45 0,3,6,9,12,15,18,21 * * *' \
+      --session isolated \
+      --agent-turn "Run VTA reward encoding: 1) Run preprocess-rewards.sh 2) Read encode-rewards.md 3) Log rewards found 4) Resolve fulfilled anticipations 5) Sync state 6) Update watermark" 2>/dev/null && echo "   ✅ Created" || echo "   ⏭️  Already exists"
   fi
 fi
 
@@ -87,7 +100,14 @@ echo ""
 echo "  # Add anticipation"
 echo "  $SKILL_DIR/scripts/anticipate.sh --add \"morning chat\""
 echo ""
-echo "  # Add something to seek"
-echo "  $SKILL_DIR/scripts/seek.sh --add \"creative work\""
-echo ""
+
+if [ "$1" != "--with-cron" ]; then
+  echo "TIP: Run with --with-cron to set up automatic decay & encoding"
+  echo "  ./install.sh --with-cron"
+  echo ""
+fi
+
+# Regenerate brain dashboard
+[ -x "$SKILL_DIR/scripts/generate-dashboard.sh" ] && "$SKILL_DIR/scripts/generate-dashboard.sh" 2>/dev/null || true
+
 echo "Done! ⭐"

@@ -130,3 +130,7 @@ with open(output_file, 'w') as f:
 
 print(f'✅ Synced motivation state to {output_file}')
 "
+
+# Regenerate brain dashboard
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+[ -x "$SCRIPT_DIR/generate-dashboard.sh" ] && "$SCRIPT_DIR/generate-dashboard.sh" 2>/dev/null || true

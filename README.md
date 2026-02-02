@@ -84,6 +84,9 @@ cd ~/.openclaw/workspace/skills/vta-memory
 | `load-motivation.sh` | Human-readable output |
 | `decay-drive.sh` | Drive fades over time |
 | `sync-motivation.sh` | Generate VTA_STATE.md |
+| `resolve-anticipation.sh` | Mark anticipation as fulfilled |
+| `preprocess-rewards.sh` | Extract reward signals from transcript |
+| `update-watermark.sh` | Update processing watermark |
 
 ## Reward Types
 
@@ -104,7 +107,7 @@ After install, `VTA_STATE.md` is created in your workspace root and auto-injecte
 
 | Part | Function | Status |
 |------|----------|--------|
-| [hippocampus](https://github.com/ImpKind/hippocampus-skill) | Memory formation, decay, reinforcement | ✅ Live |
+| [hippocampus](https://github.com/ImpKind/hippocampus) | Memory formation, decay, reinforcement | ✅ Live |
 | [amygdala-memory](https://github.com/ImpKind/amygdala-memory) | Emotional processing | ✅ Live |
 | **vta-memory** | Reward and motivation | ✅ Live |
 | basal-ganglia-memory | Habit formation | 🚧 Coming |
